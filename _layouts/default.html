@@ -3,32 +3,29 @@
   <head>
     <title>{{ page.title }}</title>
     
-    <link rel="stylesheet" href="../static/css/custom.css">
+   <link rel="stylesheet" href="/static/css/custom.css">
   
   </head>
 
+<body>
+  <!-- Navbar -->
+<div id="wrap">
 
-  <body>
-    <nav>
-<ul>
-<li><a href="/">Home</a></li>
-<li><a href="/about">About</a></li>
-<li><a href="/cv">CV</a></li>
-<li><a href="/blog">Blog</a></li>
-</ul>
-    </nav>
-<div class="container">
+    <p id="toplinks">
 
-  {{ content }}
+    </p>
 
+    <h1><a href="/"><div id="logo"></div>chris<span class="fade">daly</span></a></h1>
+    <div class="slogan">
+          <a href="/datascience.html" class="red">datascience{python}</a> :|: 
+          <a href="/dataviz.html" class="green">dataviz{d3}</a> <!-- :|: 
+          <a href="/about.html" class="blue">life{me}</a> -->
+    </div>
+
+
+</body>
 </div>
-  
-  <footer>
-   <ul>
-   <li><a href="mailto:hankquinlanhub@gmail.com">email</a></li>
-   <li><a href="https://github.com/hankquinlan">github.com/hankquinlan</a></li>
-   </ul>
-  </footer>
-  </body>
+
+{{ content }}
 
 </html>

@@ -1,0 +1,67 @@
+---
+layout: default
+title: Countries
+---
+
+<div id="wrap">
+
+      <h2>{{ page.title }} </h2>
+        <p>This dataset is taken from the World Bank who compiled it from officially-recognized international sources. It contains demographic and economic indicators for 119 countries for the years 2012-2015. It presents the most current and accurate global development data available, and includes national, regional and global estimates.</p>
+
+
+<div id="content">
+  <div id="left">
+
+    <div id="timeSlider">
+      <h2>
+      <strong>Time update:</strong>
+      <!-- Create a time range and assign a unique id: 'filter_time' -->
+      <label id = "min_time"></label><input type="range" id="filter_time" name="years" min="1995" max="2012" step="1" value="1995"><label id = "max_time"></label>
+      </h2>
+    </div>
+
+    <div id="filterOptions">
+      <h2>
+      <strong>Filter by:</strong>
+      <!-- Mark all continents as checked by default -->
+      <!-- Use the same name but different values which are the continent's name -->
+      <label><input type="checkbox" name="filter_continent" value="Americas" checked="checked"/>Americas</label>
+      <label><input type="checkbox" name="filter_continent" value="Africa" checked="checked" />Africa</label>
+      <label><input type="checkbox" name="filter_continent" value="Asia" checked="checked" />Asia</label>
+      <label><input type="checkbox" name="filter_continent" value="Europe"  checked="checked"/>Europe</label>
+      <label><input type="checkbox" name="filter_continent" value="Oceania" checked="checked"/>Oceania</label>
+      </h2>
+    </div>
+
+    <div id="aggOptions">
+      <h2>
+      <strong>Aggregate by:</strong>
+      <!-- Use the same name enforcing toggling behaviour. -->
+      <label><input type="radio" name="aggregate" value="none" >None</label>
+      <label><input type="radio" name="aggregate" value="continent">Continent</label>
+      </h2>
+    </div>
+
+    <div id="vizOptions">
+      <h2>
+      <strong>Visualize by:</strong>
+      <!-- Use the same name enforcing toggling behaviour. -->
+      
+      <label><input type="radio" name="viz" value="gdp">GDP</label>
+      <label><input type="radio" name="viz" value="life_expectancy">Life Expectancy</label>
+      <label><input type="radio" name="viz" value="population">Population</label>
+      </h2>
+    </div>
+  <br>
+  </div>
+
+  <div id="right">
+    <svg class="svg">
+      <g class="bars"></g>
+      <g class="axis"></g>
+    </svg>
+  </div>
+</div>
+
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<!-- <script src="/static/js/countries.js"></script> -->
