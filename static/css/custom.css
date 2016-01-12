@@ -228,10 +228,11 @@ tr td:first-child, td:first-child {
     width: 40%;
     height: 100%;
     overflow: scroll;
+    padding-left: 10px;
 }
 #right {
     float: left;
-    width: 60%;
+    width: 55%;
     height: 100%;
     overflow: auto;
 }

@@ -147,7 +147,7 @@ function initVis() {
   parameters.table = d3.select("body").select("#left").append("table");
 
   // Add a table caption.
-  parameters.table.append("caption").html("World Countries Ranking");
+  // parameters.table.append("caption").html("World Countries Ranking");
 
   // Add a thead and a header row for the column headers
   parameters.thead = parameters.table.append("thead").append('tr');
