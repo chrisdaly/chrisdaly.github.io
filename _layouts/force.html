@@ -1,0 +1,99 @@
+---
+layout: default
+title: Countries
+---
+<!DOCTYPE html>
+
+  <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script type="text/javascript">
+
+
+  // Original demo from Mike Bostock: http://bl.ocks.org/mbostock/4062045
+
+  var margin = {top: 40, bottom: 10, left: 20, right: 20};
+  var width = 1900 - margin.left - margin.right;
+  var height = 700 - margin.top - margin.bottom;
+
+  // Creates sources <svg> element and inner g (for margins)
+  var svg = d3.select("body").append("svg")
+              .attr("width", width+margin.left+margin.right)
+              .attr("height", height+margin.top+margin.bottom)
+            .append("g")
+              .attr("transform", "translate("+margin.left+","+margin.top+")");
+
+  /////////////////////////
+
+  var force = d3.layout.force()
+      .charge(-200)
+      .size([width, height]);
+
+  var color = d3.scale.category10();
+
+  d3.json("/static/data/miserables.json", function(data) {
+
+    // Links data join
+    var link = svg.selectAll(".link")
+        .data(data.links);
+
+    link
+      .enter().append("line");
+
+    link
+        .attr("class", "link");
+
+    link
+      .exit()
+      .remove();
+
+
+    // Nodes data join
+    var node = svg.selectAll(".node")
+        .data(data.nodes);
+
+    node
+      .enter().append("circle");
+
+    node
+        .attr("class", "node")
+        .style("fill", function(d) { return color(d.group); })
+        .attr("r", 10)
+        .call(force.drag);
+
+    node
+      .exit()
+      .remove();
+
+    force
+        .nodes(data.nodes)
+        .links(data.links)
+        .start();
+
+    node.append("title")
+      .text(function(d) { return d.name; });
+
+    force.on("tick", function(e) {
+      link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+      node.attr("cx", function(d) { return d.x; })
+          .attr("cy", function(d) { return d.y; });
+    });
+
+  });
+
+  </script>
+
+
+
+  </body>
+
+
+
+
+<!-- LINKS
+https://github.com/CS171/2015-cs171-homework/blob/master/hw2/graph_example.html
+https://github.com/CS171/2015-cs171-homework/tree/master/hw2
+
+ -->

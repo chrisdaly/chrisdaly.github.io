@@ -248,3 +248,15 @@ tr td:first-child, td:first-child {
   fill: white !important;
 
 }
+
+/*FORCE LAYOUT*/
+
+
+circle {
+  stroke: #fff;
+  stroke-width: 1;
+}
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
