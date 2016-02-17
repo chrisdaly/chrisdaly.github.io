@@ -4,21 +4,35 @@ title: Countries
 ---
 <!DOCTYPE html>
 
+<div id="wrap">
+
+  <h2>{{ page.title }} </h2>
+    <p>This simple force-directed graph shows character co-occurence in <em>Les Misérables</em>. A physical simulation of charged particles and springs places related characters in closer proximity, while unrelated characters are farther apart. Data based on character coappearence in Victor Hugo's <em>Les Miserables</em>, compiled by <a href="http://www-cs-faculty.stanford.edu/~uno/sgb.html">Donald Knuth</a>.</p>
+
+    <div id="force">
+    </div>
+
+</div>
+
+
+
+
   <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
   <script type="text/javascript">
+
 
 
   // Original demo from Mike Bostock: http://bl.ocks.org/mbostock/4062045
 
   var margin = {top: 40, bottom: 10, left: 20, right: 20};
-  var width = 1900 - margin.left - margin.right;
-  var height = 700 - margin.top - margin.bottom;
+  var width = 800 - margin.left - margin.right;
+  var height = 500 - margin.top - margin.bottom;
 
   // Creates sources <svg> element and inner g (for margins)
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select("body").select("#force").append("svg")
               .attr("width", width+margin.left+margin.right)
               .attr("height", height+margin.top+margin.bottom)
-            .append("g")
+              .append("g")
               .attr("transform", "translate("+margin.left+","+margin.top+")");
 
   /////////////////////////

@@ -1,0 +1,20 @@
+body {
+  width: 800px;
+  margin: 25px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+circle {
+  stroke: #fff;
+  stroke-width: 1;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+force {
+  width: 800px;
+  margin: 25px auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
