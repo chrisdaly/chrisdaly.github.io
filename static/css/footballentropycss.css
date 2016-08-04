@@ -1,0 +1,39 @@
+body {
+  font: 11px calibri;
+}
+
+/*.axis path,
+.axis line {
+	fill: darkgrey  ;
+  stroke-width: .1px;
+	shape-rendering: crispEdges;
+}*/
+
+.axis path,
+.axis line {
+	fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+	shape-rendering: crispEdges;
+}
+
+path.line {
+  fill: none;
+}
+
+.dot {
+  outline: none;
+  opacity: .6;
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  border-radius:  5px;
+  padding: 5px;
+  display: inline-block
+}
+
+.label {
+  font: 15px calibri;
+}

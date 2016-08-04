@@ -121,7 +121,7 @@ d3.csv("/static/data/teams_entropy.csv", function(error, data) {
         .data(Object.keys(colors))
       .enter().append("g")
         .attr("class", "legend")
-        .attr("transform", function(d, i) { return "translate(30," + (height-100+(i * 20)) + ")"; });
+        .attr("transform", function(d, i) { return "translate(10," + (height-102+(i * 20)) + ")"; });
 
     // draw legend text
     legend.append("text")
