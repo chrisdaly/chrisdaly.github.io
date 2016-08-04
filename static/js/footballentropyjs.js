@@ -16,7 +16,7 @@ var seasons = {
   "6": "2014/2015",
   "7": "2015/2016"};
 
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
+var margin = {top: 20, right: 20, bottom: 40, left: 60},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -37,7 +37,7 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#content").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -71,9 +71,9 @@ d3.csv("/static/data/teams_entropy.csv", function(error, data) {
       .attr("transform", "translate(0," + height + ")")
       .call(xAxis)
     .append("text")
-      .attr("class", "label")
+      .attr("class", "axistitle")
       .attr("x", width/2)
-      .attr("y", 30)
+      .attr("y", 40)
       .style("text-anchor", "middle")
       .text("Season");
 
@@ -81,9 +81,9 @@ d3.csv("/static/data/teams_entropy.csv", function(error, data) {
       .attr("class", "y axis")
       .call(yAxis)
     .append("text")
-      .attr("class", "label")
+      .attr("class", "axistitle")
       .attr("transform", "rotate(-90)")
-      .attr("y", -35)
+      .attr("y", -45)
       .attr("x", -height/2)
       .style("text-anchor", "middle")
       .text("Entropy (H)")
@@ -100,7 +100,8 @@ d3.csv("/static/data/teams_entropy.csv", function(error, data) {
       .on("mouseover", function(d) {
           tooltip.transition()
                .duration(200)
-               .style("opacity", .9)
+               .style("opacity", .9);
+
 
           tooltip.html("<b>"+ d["Team"] + "</b>" + "<br/>" +
                       d["League"] + "<br/>" +
@@ -108,7 +109,7 @@ d3.csv("/static/data/teams_entropy.csv", function(error, data) {
 	                    "H = " + Math.round(d["Entropy"] * 100) / 100)
                .style("left", (d3.event.pageX + 20) + "px")
                .style("top", (d3.event.pageY - 30) + "px")
-               .style("background", colors[d.League]);
+               .style("background", colors[d.League])
       })
       .on("mouseout", function(d) {
           tooltip.transition()
@@ -120,11 +121,12 @@ d3.csv("/static/data/teams_entropy.csv", function(error, data) {
     var legend = svg.selectAll(".legend")
         .data(Object.keys(colors))
       .enter().append("g")
-        .attr("class", "legend")
+        .attr("class", "label")
         .attr("transform", function(d, i) { return "translate(10," + (height-102+(i * 20)) + ")"; });
 
     // draw legend text
     legend.append("text")
+        .attr("class", "legendtext")
         .attr("x", 15)
         .attr("y", 9)
         .attr("dy", ".35em")
