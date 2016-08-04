@@ -167,9 +167,9 @@ color:#c5c5c5;
 table {
     color: #333;
     font-family: Helvetica, Arial, sans-serif;
-    width: 720px; 
-    border-collapse: collapse; 
-    border-spacing: 0; 
+    width: 720px;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 caption {
   font-weight: bold;
@@ -179,7 +179,7 @@ caption {
 td, th caption {
     padding: 3px;
     border: 0px none;
-    height: 30px; 
+    height: 30px;
 }
 th {
   cursor: pointer;
@@ -197,13 +197,13 @@ tr:nth-child(odd) {
     background-color: #FDFDFD;
 }
 /* First-child blank cells.*/
-tr td:first-child, td:first-child { 
+tr td:first-child, td:first-child {
   font-style: italic;
   font-weight: bold;
   font-size: 14px;
   text-align: right;
   padding-right: 10px;
-  width: 80px; 
+  width: 80px;
 }
 .svg rect {
   fill: "none";
@@ -252,11 +252,11 @@ tr td:first-child, td:first-child {
 /*FORCE LAYOUT*/
 
 
-circle {
+/*circle {
   stroke: #fff;
   stroke-width: 1;
 }
 .link {
   stroke: #999;
   stroke-opacity: .6;
-}
+}*/
