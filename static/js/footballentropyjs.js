@@ -55,7 +55,7 @@ var tooltip = d3.select("body").append("div")
 //     .attr("height", 200)
 //     .attr("width", 200)
 
-d3.csv("../Data/teams_entropy.csv", function(error, data) {
+d3.csv("../data/teams_entropy.csv", function(error, data) {
   if (error) throw error;
 
   data.forEach(function(d) {
