@@ -260,3 +260,14 @@ tr td:first-child, td:first-child {
   stroke: #999;
   stroke-opacity: .6;
 }*/
+
+#viz {
+    width: 1600px;
+    height: 600px;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}

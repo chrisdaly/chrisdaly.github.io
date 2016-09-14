@@ -5,27 +5,20 @@ title: Yelp Sentiment Analysis
 <div id="wrap">
 
       <h2>{{ page.title }} </h2>
-        <p>Sentiment analysis is often used by companies to quantify general social media opinion
+        <p><a href="https://en.wikipedia.org/wiki/Sentiment_analysis">Sentiment analysis</a> is the use of natural language processing, text analysis and computational linguistics to
+          identify subjective information. It is often used by companies to quantify general social media opinion
           (for example, using tweets about several brands to compare customer satisfaction).
           One of the simplest and most common sentiment analysis methods is to classify words
-          as “positive” or “negative”, then to average the values of each word to categorize
-          the entire document.
+          as "positive" or "negative", then to average the values of each word to categorize
+          the entire document. This analysis measures the sentimentality of a word through its ratio of occurances in
+          5 star ratings to 1 star ratings in Yelp reviews.
         </p>
-
-        <p>In information theory <a href="https://en.wikipedia.org/wiki/Entropy_(information_theory)">entropy</a>
-          is a measure of information and uncertainty. This analysis utilizes entropy as a measurement of the unpredictabiity of each league. Entropy is computed based on the probabilities of each outcome for every game based on the odds from bookmakers.
-           The idea here is that if there are consistently large favourites in games throughout the season then the league is considered predictable and therefore uncompetitive.
-        <br>
-        <br>
-          Entropy is at its minimum when one outcome has a probability of 1 <b>(H = 0, totally predictable)</b>.
-          <br>
-          Entropy is at its maximum when each outcome has an equal probability <b>(H = 1.098, totally unpredictable)</b>.
 
         </p>
 </div>
 
 
-
+<link rel="stylesheet" href="/static/css/custom.css">
 <link rel="stylesheet" href="/static/css/yelpcss.css">
 
 <div id="viz"></div>
@@ -33,15 +26,19 @@ title: Yelp Sentiment Analysis
 <div id="wrap">
   <br>
 
-  <p>The data used in this visualization is taken from from <a href="(https://www.kaggle.com/c/yelp-recsys-2013">Kaggle's Yelp Business Rating Prediction competition</a>.
+  <p>One of the most apparent things about this visualization is that words with a positive rating are generally describing the food,
+    whereas negative words are generally describing the service. Any manager looking to efficiently improve their restaurant should first look at their customer service
+    before thinking about amending the menu or altering the ambiance.
+
+  </p>
 
 
-
-    <a href="(https://www.kaggle.com/c/yelp-recsys-2013">Kaggle’s European
-    Soccer database</a>, which spans across 8 years from 2008 to 2016. The data was
-  processed and the entropy for each team and for each year was calculated in an <a href="https://github.com/chrisdaly/Football-Entropy/blob/master/Analysis/Notebooks/Analysis.ipynb">ipython notebook</a>.
+  <p>The data used in this visualization is taken from from <a href="(https://www.kaggle.com/c/yelp-recsys-2013">Kaggle's Yelp Business Rating Prediction competition</a>,
+    a collection of millions of restaurant reviews, each accompanied by a 1-5 star rating.
+    The data was processed and the sentiment ratio for each token was calculated in an <a href="https://github.com/chrisdaly/Yelp-Analysis/blob/master/notebooks/Yelp%20analysis.ipynb">ipython notebook</a>.
+    A naiive bayes model was also used to predict the rating of new reviews with an accuracy of 92% achieved.
   </p>
 </div>
 
 <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="/static/js/footballentropyjs.js"></script>
+<script src="/static/js/yelpjs.js"></script>
