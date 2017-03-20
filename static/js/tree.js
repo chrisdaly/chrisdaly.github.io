@@ -1,4 +1,4 @@
-var diameter = 800;
+var diameter = 1000;
 
 var margin = {top: 10, right: 100, bottom: 40, left: 100},
     width = diameter,
