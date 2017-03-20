@@ -1,4 +1,4 @@
-var diameter = 2000;
+var diameter = 1800;
 
 var width = diameter,
     height = diameter;
