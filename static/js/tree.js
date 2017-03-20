@@ -29,7 +29,7 @@ d3.json("/static/data/new_tree.json", function(error, graph) { //new.json
 
   update(root);
 
-  d3.select(self.frameElement).style("height", "800px");
+  d3.select(self.frameElement).style("height", "1000px");
 
   function update(source) {
 
