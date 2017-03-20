@@ -1,4 +1,4 @@
-var diameter = 1200;
+var diameter = 2000;
 
 var width = diameter,
     height = diameter;
@@ -7,8 +7,7 @@ var i = 0,
     duration = 350,
     root;
 
-d3.json("/static/data/new_tree.json", function(error, graph) { //new.json
-  if (error) throw error;
+d3.json("/static/data/new_tree.json", function(error, graph) {
 
   var svg = d3.select("#viz").append("svg")
       .attr("width", width )
