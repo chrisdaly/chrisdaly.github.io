@@ -46,8 +46,6 @@ function makeGraphs(error, projectsJson, statesJson) {
   var stateDim = ndx.dimension(function(d) { return d["school_state"]; });
   var totalDonationsDim  = ndx.dimension(function(d) { return d["total_donations"]; });
 
-  console.log(stateDim)
-
   // Define 6 data groups.
   var all = ndx.groupAll();
   var numProjectsByDate = dateDim.group();
@@ -56,7 +54,9 @@ function makeGraphs(error, projectsJson, statesJson) {
   var totalDonationsByState = stateDim.group().reduceSum(function(d) {
     return d["total_donations"];
   });
-  var totalDonations = ndx.groupAll().reduceSum(function(d) {return d["total_donations"];});
+  var totalDonations = ndx.groupAll().reduceSum(function(d) {
+    return d["total_donations"];
+  });
 
   // Calculate max values to size charts.
   var max_state = totalDonationsByState.top(1)[0].value;
@@ -129,5 +129,4 @@ function makeGraphs(error, projectsJson, statesJson) {
 
   // Render charts.
   dc.renderAll();
-
 };
