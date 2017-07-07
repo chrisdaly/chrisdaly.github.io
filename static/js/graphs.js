@@ -109,7 +109,6 @@ function makeGraphs(error, projectsJson, statesJson) {
         .group(numProjectsByPovertyLevel)
         .xAxis().ticks(4);
 
-
 	usChart.width(1000)
 		.height(330)
 		.dimension(stateDim)
