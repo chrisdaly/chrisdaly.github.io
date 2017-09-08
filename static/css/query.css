@@ -1,0 +1,304 @@
+/*.node text {
+  font: 10px sans-serif;
+
+}*/
+
+.node text {
+  width: 50px;
+  alignment-baseline: middle;
+  text-anchor: middle;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+}
+
+text.rule {
+  font: 100px sans-serif;
+  text-anchor: middle;
+  fill: red;
+}
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  border-radius:  5px;
+  padding: 5px;
+  display: inline-block;
+  opacity: 1;
+  font: 15px calibri;
+  color: black;
+
+}
+
+
+body {
+background: white;
+color:gray;
+font:86% 'lucida grande','lucida sans unicode',Verdana,Tahoma,Arial,sans-serif;
+line-height:1.2em;
+margin:0 auto;
+padding:0;
+}
+
+label { margin-left:5px; }
+
+a {
+color:#0383c9;
+font-weight:700;
+text-decoration:none;
+}
+
+a:hover {
+text-decoration:underline;
+color: ;
+}
+
+p {
+margin:0 0 18px 0px;
+color:gray;
+}
+
+ul,ol,dl {
+font-size:1em;
+margin:2px 0 16px 0px;
+}
+
+ul ul,ol ol {
+margin:4px 0 4px 10px;
+}
+
+.posts { padding:0;}
+
+li { padding:0 4px; list-style: none; }
+
+ul.posts li span { float:right; font-family:monofur, monaco, courier; color:#888; }
+ul.posts li a { font-weight:200;}
+
+h1 {
+color:#0383c9;
+font-size:4.7em;
+letter-spacing:-5px;
+margin:0 0 30px 0px;
+padding:50px 0 0 0;;
+
+}
+
+h1 a {
+color:#0383c9;
+text-transform:none;
+}
+
+h1 a:hover { color:#fba919 ;}
+
+
+
+.red { color: #D00000 ; }
+.green { color: #23af4c; }
+.blue { color: #0383c9; }
+
+a.red:hover { border: solid 2px;padding:1px; text-decoration:none;  }
+a.green:hover { border: solid 2px;padding:1px; text-decoration:none;  }
+a.blue:hover { border: solid 2px;padding:1px; text-decoration:none;  }
+
+
+.slogan a { padding:3px; line-height: 2.5em; }
+
+
+h2 {
+border-bottom:1px solid #e5e5e5;
+color:#0383c9;
+font-size:1.7em;
+font-weight:100;
+letter-spacing:-1px;
+margin:0 0 10px;
+padding:0px 2px 4px 5px;
+}
+
+.post_title {
+font-size:1.8em;
+font-weight:normal;
+padding-bottom: 6px;
+}
+
+h3 {
+border-bottom:1px solid #e5e5e5;
+color:#fba919;
+font-size:1.4em;
+font-weight: 100;
+margin:10px 0 8px;
+padding:1px 2px 2px 3px;
+}
+
+h4 {
+color: #23af4c;
+}
+/*** Main wrap and header ***/
+
+#wrap {
+color:grey;
+margin:10px auto;
+padding:0;
+width:800px;
+}
+
+#header {
+margin:0;
+
+}
+
+#toplinks {
+font-size:0.9em;
+padding:5px 2px 2px 3px;
+text-align:right;
+}
+
+div.slogan {
+color:gray;
+font-size:1.5em;
+font-weight:700;
+letter-spacing:-1px;
+line-height:1.2em;
+margin:-5px 0 30px 0px;
+}
+
+div.slogan div { display:inline;}
+
+/*** Main content ***/
+
+
+
+/*** Footer ***/
+
+#footer {
+border-top:4px solid #dadada;
+clear:both;
+color:gray;
+font-size:0.9em;
+line-height:1.6em;
+margin:0 auto;
+padding:8px 0;
+text-align:right;
+}
+
+#footer p {
+margin:0;
+padding:0;
+}
+
+#footer a {
+color:#808080;
+}
+
+/*** Various classes ***/
+
+.fade {
+color:#c5c5c5;
+}
+
+
+/*World Development*/
+table {
+    color: #333;
+    font-family: Helvetica, Arial, sans-serif;
+    width: 720px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+caption {
+  font-weight: bold;
+  font-size: 30px;
+  height: 35px;
+}
+td, th caption {
+    padding: 3px;
+    border: 0px none;
+    height: 30px;
+}
+th {
+  cursor: pointer;
+  background: linear-gradient(#333 0%,#444 100%);
+  color: #FFF; font-weight: bold;
+  height: 40px;
+}
+td {
+  text-align: right;
+}
+tr:nth-child(even) {
+    background-color: #EEE;
+}
+tr:nth-child(odd) {
+    background-color: #FDFDFD;
+}
+/* First-child blank cells.*/
+tr td:first-child, td:first-child {
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: right;
+  padding-right: 10px;
+  width: 80px;
+}
+.svg rect {
+  fill: "none";
+  rx: 2;
+  ry: 2;
+  opacity: 0.9;
+}
+.svg text {
+  fill: black;
+  font: 10px calibri;
+  text-anchor: end;
+}
+.x.axis path {
+  fill:none;
+  stroke:darkgrey;
+}
+#content, html, body {
+    height: 100%;
+}
+#left {
+    float: left;
+    width: 40%;
+    height: 100%;
+    overflow: scroll;
+    padding-left: 10px;
+}
+#right {
+    float: left;
+    width: 55%;
+    height: 100%;
+    overflow: auto;
+}
+.tick text{
+  font-size: 12px;
+}
+
+.tick line{
+  opacity: 0.2;
+}
+
+#right > svg > g.bars > rect {
+  fill: white !important;
+
+}
+
+/*FORCE LAYOUT*/
+
+
+/*circle {
+  stroke: #fff;
+  stroke-width: 1;
+}
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}*/
+
+#viz {
+    margin: auto;
+    padding:0;
+    width: 1200px;
+
+}

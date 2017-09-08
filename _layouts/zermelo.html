@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style>
+h1 {
+  font-family: Inconsolata;
+  fill: #333;
+}
+
+.detail {
+    height: 20px;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+}
+
+.link.not {
+    /* stroke: red; */
+    stroke-dasharray: 5;
+}
+
+node.text {
+  text-align: center;
+  width: 50px;
+  alignment-baseline: middle;
+  text-anchor: middle;
+    pointer-events: none;
+}
+
+circle {
+  stroke: grey;
+
+}
+
+circle.operator {
+    fill: #0383c9;
+}
+
+circle.term {
+    fill: white;
+    r: 10;
+}
+
+text {
+  font-family: Inconsolata;
+}
+
+text.operator {
+    font-size: 18px;
+    text-align: center;
+    alignment-baseline: middle;
+    text-anchor: middle;
+    fill: white;
+    text-transform: uppercase;
+    /*font-weight: 700;*/
+    pointer-events: none;
+}
+
+text.term:first-letter {
+    text-transform: uppercase;
+}
+
+text.term {
+  font-size: 13px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+input[type="textbox"] {
+    width: 600px;
+}
+
+table {
+    color: #333;
+    /*width: 720px;*/
+    border-collapse: collapse;
+}
+
+th {
+  text-transform: uppercase;
+  text-align: left;
+
+  background: linear-gradient(#333 0%,#444 100%);
+  color: #FFF; font-weight: bold;
+  height: 40px;
+}
+
+th, td {
+    padding: 15px;
+    font-family: Inconsolata;
+    padding: 3px;
+    border: 1px black solid;
+    height: 30px;
+}
+
+tr:nth-child(even) {
+    background-color: #EEE;
+}
+tr:nth-child(odd) {
+    background-color: #FDFDFD;
+}
+
+h4 {
+  font-family: Inconsolata;
+}
+
+    </style>
+  </head>
+
+<body>
+  <h1>[Zermelo] Query Visualization</h1>
+
+  <div id="search">
+      <form method="post">
+      <input type="textbox" name="query" value='("hello world" OR "hey you guys") AND ("this place is awesome" AND (NOT "goonies"))'/>
+      <button id="test">Send</button>
+    </form>
+    <button id="sort">Sort</button>
+    <button id="minimize">Minimize</button>
+    <button id="maximize">Maximize</button>
+  </div>
+<div class='detail'>
+  <h4 id="detail">detail:</h4>
+</div>
+
+  <div id="viz"></div>
+<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
+  <!-- Using d3 v3, because the tree layout changed a lot in v4. -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<script>
+  function abbrNum(number, decPlaces) {
+      // 2 decimal places => 100, 3 => 1000, etc
+      decPlaces = Math.pow(10,decPlaces);
+
+      // Enumerate number abbreviations
+      var abbrev = [ "k", "m", "b", "t" ];
+
+      // Go through the array backwards, so we do the largest first
+      for (var i=abbrev.length-1; i>=0; i--) {
+
+          // Convert array index to "1000", "1000000", etc
+          var size = Math.pow(10,(i+1)*3);
+
+          // If the number is bigger or equal do the abbreviation
+          if(size <= number) {
+               // Here, we multiply by decPlaces, round, and then divide by decPlaces.
+               // This gives us nice rounding to a particular decimal place.
+               number = Math.round(number*decPlaces/size)/decPlaces;
+
+               // Handle special case where we round up to the next abbreviation
+               if((number == 1000) && (i < abbrev.length - 1)) {
+                   number = 1;
+                   i++;
+               }
+
+               // Add the letter for the abbreviation
+               number += abbrev[i];
+
+               // We are done... stop
+               break;
+          }
+      }
+
+      return number;
+  }
+
+  function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+</script>
+<script>
+  // Pythonic string subtitution.
+  String.prototype.format = function () {
+    var i = 0, args = arguments;
+    return this.replace(/{}/g, function () {
+      return typeof args[i] != 'undefined' ? args[i++] : '';
+    });
+  };
+
+  // Hits zermelo.w2odst.com/api/ with query and data - synchronous.
+  function get_data_from_endpoint(endpoint, query, data=null){
+    r = $.get({
+     url: 'http://zermelo.w2odst.com/api/{}?q={}'.format(endpoint, query),
+     data: data,
+     dataType: 'json',
+     async:false
+    })
+    return r
+  }
+
+  // Visits each node, pulls relevant data, adds node properties.
+  function visit_node(json){
+    for (var i = 0; i < json.length; i++) {
+       var each = json[i];
+       each['id'] = j;
+       j++
+
+       data = {'size': sample_size};
+
+       if ('children' in each) {
+          visit_node(each['children']);
+
+          r = get_data_from_endpoint('search', each['query'], data=data);
+          each['count'] = r.responseJSON['hits']['total'];
+          if (each['count'] > 0) {
+            samples = r.responseJSON['hits']['hits']
+            each['samples'] = []
+
+            samples.forEach(function(hit){
+              d_temp = {
+                'id': hit['_source']['id'],
+                'created_at': hit['_source']['created_at'],
+                'author_alias': hit['_source']['author']['alias'],
+                'body': hit['_source']['body'],
+                'tags': hit['_source']['tags']
+                };
+              each['samples'].push(d_temp)
+            });
+          }
+          else {
+            each['samples'] = 'N/A';
+          }
+       }
+       else {
+         r = get_data_from_endpoint('search', each['query'], data=data);
+         each['count'] = r.responseJSON['hits']['total'];
+         if (each['count'] > 0) {
+           samples = r.responseJSON['hits']['hits']
+           each['samples'] = []
+
+           samples.forEach(function(hit){
+             d_temp = {
+                 'id': hit['_source']['id'],
+                 'created_at': hit['_source']['created_at'],
+                 'author_alias': hit['_source']['author']['alias'],
+                 'body': hit['_source']['body'],
+                 'tags': hit['_source']['tags']
+               };
+             each['samples'].push(d_temp)
+           });
+         }
+         else {
+           each['samples'] = 'N/A';
+         }
+       }
+     }
+   return json
+  }
+
+  function get_raw_data(query){
+    // Global that tracks id in recursion.
+    j = 0;
+
+    // Parse submitted query into json tree.
+    r = get_data_from_endpoint('search/parse', query)
+    data = r.responseJSON
+
+    // Populate parsed query with extra fields.
+    data = [data];
+    console.log(JSON.stringify(data));
+
+    data = visit_node(data);
+    console.log('-- End of data retrieval --');
+
+    // Wrap result a parent object.
+    data = {"id": 'Results',
+      "count": data[0].count,
+      "children": data
+    };
+    return data;
+  }
+</script>
+<script>
+    //##########################################################################
+    // Page Setup.
+    //##########################################################################
+
+    var margin = {top: 30, right: 10, bottom: 20, left: 10};
+    var width = 1900 - margin.left - margin.right,
+        height = 700 - margin.top - margin.bottom;
+
+    var svg = d3.select("#viz").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    var table_samples = d3.select("body").append("table"); //.select("#left").
+    var thead_samples = table_samples.append("thead").append('tr');
+    var tbody_samples = table_samples.append("tbody");
+
+    var duration = 500;
+    var rect_dim = {width: 60, height: 25};
+    var link_dim = [.5, 20];
+    var max_char = 30;
+    var sort = false;
+
+    // How many samples to pull using API.
+    var sample_size = 5;
+
+    // Path generator.
+    var diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
+
+    // Hides or reveals children depending on node state.
+    function toggle(d) {
+      // If the node has children, stash the data and remove it from this attr.
+      if (d.children) {
+        d._children = d.children;
+        d.children = null;
+      }
+      // Recover the children from the stash.
+      else if (d._children) {
+        d.children = d._children;
+        d._children = null;
+      }
+    }
+
+    // Hide children for this element and all its children.
+    function minimize(d) {
+      if (d && d.children) {
+        d.children.forEach(minimize);
+        toggle(d);
+      }
+    }
+
+    function maximize(d) {
+      if (d.type == 'binop') {
+        if (d._children) {
+          d._children.forEach(maximize);
+          toggle(d);
+        }
+        else {
+          d.children.forEach(maximize)
+        }
+      }
+    }
+
+    //##########################################################################
+    // Initialize viz.
+    //##########################################################################
+
+    function init_viz() {
+      // Clear any elements from previous visualizations.
+      svg.selectAll('.node').remove();
+      svg.selectAll('.link').remove();
+      svg.selectAll('.text').remove();
+      console.log('data = ', data);
+
+      // Init position to top left corner for future transition.
+      data.x0 = height/2;//0;
+      data.y0 = 0;
+
+      update(data);
+    };
+
+    //##########################################################################
+    // Update viz.
+    //##########################################################################
+
+    // The table generation function
+    function update_table(data) {
+        console.log('-- update_table -- ');
+        console.log('Table data = ', data);
+
+        var columns_count = ["author_alias", "body", "tags"]; //["id", "created_at",
+
+        // Header row.
+        thead_samples.selectAll("th")
+            .data(columns_count)
+            .enter()
+            .append("th")
+                .text(function(column) { return column; });
+
+        data_samples = data['samples']
+
+        // create a row for each object in the data
+        var rows = tbody_samples.selectAll("tr")
+            .data(data_samples, function(d) {
+              return d['id'];})
+
+        rows.enter()
+            .append("tr");
+
+        rows.exit().remove()
+
+        // Data join
+        // create a cell in each row for each column
+        var cells = rows.selectAll("td")
+            .data(function(row) {
+                return columns_count.map(function(column) {
+                    return {column: column, value: row[column]};
+                });
+            });
+
+        // Update.
+        cells.html(function(d) { return d.value; });
+
+        // Enter.
+        cells.enter()
+            .append("td")
+            .attr("style", "font-family: Courier") // sets the font style
+                .html(function(d) { return d.value; });
+
+        cells.exit().remove();
+    }
+
+    // Takes the node of interest (that was clicked on) and draws the new tree structure.
+    function update(clicked_node) {
+      console.log('-- update --');
+
+      // Instantiate tree layout.
+      var tree = d3.layout.tree()
+        .size([height, width - 4*margin.left]);
+
+      if (sort) {
+        tree.sort(function(a, b) {
+          return b.count - a.count || d3.ascending(a.term, b.term); })
+      }
+
+      // Use tree layout to compute nodes and links data.
+      var nodes = tree.nodes(data).reverse();
+      var links = tree.links(nodes);
+
+      // Delete the first node, only needed it to get the top link.
+      // console.log('nodes = ', nodes);
+      // console.log('links = ', links);
+
+      var extents = d3.extent(links, function(d) {
+        if (d.target.operator == 'not') {
+          return 1;
+        }
+        else {
+          if (+d.target.count == 0) {
+            return +d.target.count; //1
+          }
+          else {
+            return +d.target.count;
+          }
+        }
+      })
+
+      // Scale for link thickness.
+      var scale_links = d3.scale.linear()
+                          .domain([0, extents[1]])
+                          .range(link_dim);
+
+      // Links.
+      var link = svg.selectAll('path.link')
+        .data(links, function(d) { return d.target.id; })
+
+      var link_enter = link.enter().insert("svg:path", "g.node") // this prevents layering issue.
+        .attr('class', function(d) { return d.target.operator != 'not' ? 'link': 'link not' })
+        .attr("d", function(d) {
+            var o = { x: clicked_node.x0, y: clicked_node.y0 };
+            return diagonal({source: o, target: o});
+        })
+
+      link_enter.transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+      link.transition()
+          .duration(duration)
+          .attr("d", diagonal)
+          .attr('stroke-width', function(d) { return d.target.operator != 'not' ? scale_links(+d.target.count): scale_links(+d.source.count) }); //scale_links(+d.source.count)
+
+      // Transition exiting nodes to the parent's new position.
+      link.exit().transition()
+          .duration(duration)
+          .attr("d", function(d) {
+            var o = {x: clicked_node.x, y: clicked_node.y};
+            return diagonal({source: o, target: o});
+          })
+          .remove();
+
+      // Nodes.
+      var node = svg.selectAll('.node')
+        .data(nodes, function(d) { return d.id  });
+
+      // Transition current nodes to their new position.
+      var node_update = node.transition()
+          .duration(duration)
+          .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+      var node_enter = node.enter().append('g')
+        .attr('class', 'node')//function(d) { return 'operator' in d ? 'node operator': 'node term'})
+        .attr('transform', function (d) { return 'translate(' + clicked_node.y0 + "," + clicked_node.x0 + ')'})
+        .on("click", function(d) {
+          if (d.count > 0) {
+            update_table(d);
+          }
+
+          if ('operator' in d) {
+            toggle(d);
+            update(d);
+          }
+        });
+
+      // Circle.
+     var countmax = d3.extent(nodes, function(d) { return d.count; })
+     console.log(countmax)
+     var radius = d3.scale.quantile()
+      .domain(countmax)
+      .range([15,20,25,30,35,40]); //,45,50
+
+      node_enter.append('circle')
+        .attr('class', function(d) { return 'operator' in d ? 'operator': 'term'})
+        .attr("r", function (d) {return radius(d.count)});
+
+        node_enter.on('mouseover', function(d) {
+          $("#detail").html(("<b>count: </b>" + d.count + "</b>" + "<br/>" + "<br/>" +
+          "<b>term: </b>" + d.query.replace(/\"/g, '')))
+        })
+       .on("mouseout",
+        function(d) {
+             $("#detail").html(("<b>count: </b>" + "select" + "</b>" + "<br/>" + "<br/>" +
+                "<b>term: </b>" + "select"))
+        })
+
+      // Text - query.
+      node_enter.append('text')
+        .text(function(d) {
+          if (d['id'] == 'Results') {
+            return abbrNum(d.count, 1) + ' hits'
+          } else if ('operator' in d) {
+            return d.operator.toString();
+          } else {
+              if (d.query.length <= max_char){
+                return d.query;
+              }
+              else {
+                return d.query.slice(0, max_char).replace(/\"/g,'') + "...";
+              }
+          }
+        })
+        .attr('class', function(d) {
+            if (d.id == 'Results') {
+              return 'results'
+            }
+            else if ('operator' in d) {
+              return 'operator'
+            }
+            else {
+              return 'term'
+            }
+        });
+
+      // Transition current nodes to their new position.
+      var node_update = node.transition()
+          .duration(duration)
+          .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+           .attr("r", function (d) {return radius(d.count)});
+
+      // Transition exiting nodes to the parent's new position.
+      var node_exit = node.exit().transition()
+          .duration(duration)
+          .attr("transform", function(d) { return "translate(" + clicked_node.y + "," + clicked_node.x + ")"; })
+          .style("fill-opacity", 1e-6)
+          .remove();
+
+     d3.selectAll('circle').on('mouseover', function(d) {
+      console.log(this)
+    d3.select(this).style('stroke', 'red').style('stroke-width', 3)
+    var nodesToHighlight = links.map(function (e) { return e.source === d ? e.target : e.target === d ? e.source : 0})
+          node.filter(function (d) { return nodesToHighlight.indexOf(d) >= 0; }).select('circle')
+           .style('stroke', 'red').style('stroke-width', 3)
+           link.style('stroke', function (link_d) {
+            return link_d.source === d | link_d.target === d ? '#2FA4DD' : null;
+            label.style('fill', function (d) { return link_d.source === d | link_d.target === d ? 'black' : null})
+            });
+
+    })
+
+     d3.selectAll('circle').on('mouseout', function(d) {
+      console.log(this)
+      d3.select(this).style('stroke', null).style('stroke-width', null)
+      var nodesToHighlight = links.map(function (e) { return e.source === d ? e.target : e.target === d ? e.source : 0})
+            node.filter(function (d) { return nodesToHighlight.indexOf(d) >= 0; }).select('circle')
+      .style('stroke', null).style('stroke-width', null)
+      link.style('stroke', null);
+      })
+
+      // Stash the current node positions for future transition.
+      nodes.forEach(function(d) {
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+
+
+    }
+
+    //##########################################################################
+    // Register interactive event listeners.
+    //##########################################################################
+    // Select all input fields named 'filter_continent'.
+    d3.selectAll('#sort').on('click', function() {
+      console.log('-- sort --')
+        sort = true;
+        update(data);
+    });
+
+    d3.selectAll('#minimize').on('click', function() {
+        console.log('-- minimize --')
+        // Change the display to only show the root node's children.
+        data.children.forEach(minimize)
+        update(data);
+    });
+
+    d3.selectAll('#maximize').on('click', function() {
+        console.log('-- maximize --')
+        // Change the display to only show the root node's children.
+        data.children.forEach(maximize)
+        update(data);
+    });
+
+    $(document).ready(function() {
+      $("#test").click(function(e) {
+        console.log('-- Button pressed --');
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Extract query from search bar and get raw data from API.
+        var query = $("input[name=query]").val();
+        data = get_raw_data(query);
+
+        console.log('-- Initializing viz --');
+        sort = false;
+        init_viz();
+      });
+    });
+
+  </script>
+<body>

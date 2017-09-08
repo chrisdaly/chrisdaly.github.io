@@ -1,0 +1,29 @@
+---
+layout: default
+title: Query viz
+---
+<div id="wrap">
+
+      <h2>{{ page.title }} </h2>
+        <p><b>Query = (A AND B) OR (C NOT D)</b>
+        <br>
+        <br>
+
+        Currently using just characters (as opposed to letters, or shapes) to denote the logical operations.
+        <br>
+
+        <ul>
+        <li>& - AND</li>
+        <li>|| - OR</li>
+        <li>! - NOT</li>
+        </ul>
+        </p>
+</div>
+
+
+<link rel="stylesheet" href="/static/css/custom.css">
+<link rel="stylesheet" href="/static/css/query.css">
+
+<div id="viz"></div>
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="/static/js/query.js"></script>

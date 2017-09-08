@@ -1,0 +1,45 @@
+{
+  "children": [
+    {
+      "children": [
+        {
+          "id": "2",
+          "impurity": "0.12",
+          "rule": "A",
+          "count": "50.0"
+        },
+        {
+          "id": "3",
+          "impurity": "0.06",
+          "rule": "B",
+          "count": "20.0"
+        }
+      ],
+      "id": "1",
+      "rule": "A & B",
+      "operator": "&",
+      "count": "70.0"    },
+    {
+      "children": [
+        {
+          "id": "5",
+          "rule": "C",
+          "count": "70.0"
+        },
+        {
+          "id": "6",
+          "rule": "D",
+          "count": "60.0"
+        }
+      ],
+      "id": "4",
+      "rule": "C NOT D",
+      "operator": "!",
+      "count": "10.0"
+    }
+  ],
+  "id": "0",
+  "rule": "(A & B) OR (C NOT D)",
+  "operator": "||",
+  "count": "100.0"
+}
