@@ -1,0 +1,120 @@
+h1, h4 {
+  font-family: Inconsolata;
+}
+
+input { 
+  font-family: Inconsolata;
+}
+
+button {
+  font-family: Inconsolata;
+
+}
+
+.results {
+  font-size: 50px;
+  fill: grey;
+  font-weight: bold;
+}
+
+.detail {
+  height: 20px;
+}
+
+div#left {
+  float: left;
+  width: 50%;
+}
+
+div#right {
+  float: right;
+  width: 50%;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-opacity: .8;
+  fill: none;
+}
+
+.link.not {
+  stroke-dasharray: 5;
+}
+
+node.text {
+  text-align: center;
+  width: 50px;
+  alignment-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+circle {
+  stroke: grey;
+}
+
+circle.operator {
+  fill: #0383c9;
+}
+
+circle.term {
+  fill: white;
+  r: 10;
+}
+
+text {
+  font-family: Inconsolata;
+  pointer-events: none;
+}
+
+text.operator {
+  font-size: 18px;
+  text-align: center;
+  alignment-baseline: middle;
+  text-anchor: middle;
+  fill: white;
+  text-transform: uppercase;
+}
+
+text.term:first-letter {
+  text-transform: uppercase;
+}
+
+text.term {
+  font-size: 13px;
+  text-anchor: middle;
+}
+
+input[type="textbox"] {
+  width: 90%;
+}
+
+table {
+  height: 15em;
+  overflow: auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th, td {
+  font-family: Inconsolata;
+  font-size: 12px;
+  padding: 3px;
+  border: 1px black solid;
+  text-overflow: ellipsis;
+}
+
+th {
+  text-transform: uppercase;
+  background: linear-gradient(#333 0%,#444 100%);
+  color: #FFF; font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #EEE;
+}
+
+tr:nth-child(odd) {
+  background-color: #FDFDFD;
+}
