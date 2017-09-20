@@ -1,0 +1,16 @@
+text {
+  font: bold 48px Inconsolata;
+}
+
+text.enter {
+    fill: green;
+}
+
+text.update {
+    fill: blue;
+}
+
+
+text.exit {
+    fill: red;
+}

@@ -1,7 +1,7 @@
 var margin = {top: 20, right: 20, bottom: 40, left: 60};
 
 var width = 1920 - margin.left - margin.right,
-    height = 1200 - margin.top - margin.bottom;
+    height = 600 - margin.top - margin.bottom;
     bar_padding = 1;
 
 var svg = d3.select("body").append("svg")
@@ -9,7 +9,7 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom)
 	
 var g = svg.append("g")
-    .attr("transform", "translate(" + (10 * margin.left) + "," + (20 * margin.top) + ")");
+    .attr("transform", "translate(" + (10 * margin.left) + "," + (10 * margin.top) + ")");
 
 var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
 var distance = 30;
