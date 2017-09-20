@@ -3,14 +3,14 @@ text {
 }
 
 text.enter {
-    fill: green;
+    fill: #23af4c;
 }
 
 text.update {
-    fill: blue;
+    fill: #0383c9;
 }
 
 
 text.exit {
-    fill: red;
+    fill: #D00000;
 }
