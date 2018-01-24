@@ -1,0 +1,62 @@
+<html lang="en">
+
+<head>
+    <!-- <link rel="stylesheet" href="roche/materialize.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="/static/forcelayout/css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="viz"></div>
+    <div id='bottom_panel'>
+        <div id="bot_left">
+            <div id="searchbar">
+                <input type="text" id='search' onkeydown='check_nodes_for_string(this)' placeholder="Search">
+                <!-- onclick="dim_links()"  -->
+            </div>
+            <div id="country">
+                <select id="dropdown"></select>
+            </div>
+            <div id="aesthetics">
+                <input type="checkbox" id="checkbox_tooltip">Show tooltip
+            </div>
+        </div>
+        <div id="bot_middle_left">
+            <div id="number">
+                <div class="col-sm-2">
+                    <p id="value2"></p>
+                </div>
+                <div class="col-sm">
+                    <div id="slider2"></div>
+                </div>
+            </div>
+        </div>
+        <div id="bot_middle_right">
+            <div id="type">
+            </div>
+        </div>
+        <div id="bot_right">
+            <div id='legend'>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="static/forcelayout/js/d3.v4.min.js"></script>
+<script src="static/forcelayout/js/jquery-1.12.4.js"></script>
+<script src="static/forcelayout/js/d3-simple-slider.js"></script>
+
+
+<script src="/static/forcelayout/js/helpers.js"></script>
+<script src="/static/forcelayout/js/data_processing.js"></script>
+<script src="/static/forcelayout/js/graph_searching.js"></script>
+<script src="/static/forcelayout/js/simulation.js"></script>
+<script src="/static/forcelayout/js/ui.js"></script>
+<script src="/static/forcelayout/js/viz.js"></script>
+<script src="/static/forcelayout/js/transitions.js"></script>
+
+
+
+
+
+
+</html>

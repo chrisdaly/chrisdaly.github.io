@@ -1,0 +1,133 @@
+text {
+    font-family: Montserrat;
+}
+
+
+.nodes circle {
+    pointer-events: all;
+    cursor: move;
+}
+
+svg#network {
+    cursor: -webkit-grab;
+    position: relative;
+    top: 1px;
+}
+
+img {
+    height: 42px;
+    width: 42px;
+}
+
+.link {
+    fill: none;
+    stroke: #bbb;
+}
+
+.nodes text {
+    pointer-events: none;
+    font-family: Montserrat;
+    text-anchor: middle;
+    dominant-baseline: central;
+    /*fill: #404040;*/
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+.tooltip {
+    /*line-height: 1;*/
+    width: 400px;
+    background: linear-gradient(#FAFAFA, #E1E1E1);
+    position: absolute;
+    border-radius: 20px;
+    padding: 5px;
+    opacity: 0;
+    font: 10px;
+        font-family: Montserrat;
+
+    color: black;
+    stroke: rgba(255, 255, 255);
+    display: inline-block;
+    vertical-align: middle;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+p.right {
+    float: right;
+}
+
+p.left {
+    float: left;
+}
+
+br {
+    line-height: 1px
+}
+
+div#viz {
+    float: top;
+    height: 95%;
+}
+
+div#bottom_panel {
+    border-top-style: inset;
+    padding-top: 5px;
+    overflow: hidden;
+}
+
+div#bot_left {
+    float: left;
+    width: 10%;
+}
+
+div#bot_middle_left {
+    float: left;
+    width: 30%;
+}
+
+div#bot_middle_right {
+    float: left;
+    width: 30%;
+}
+
+div#bot_right {
+    float: right;
+    width: 30%;
+}
+
+div#legend {
+    border-left-style: ridge;
+}
+
+select {
+    display: block;
+}
+
+td {
+    text-align: center;
+}
+
+.filter_circle {
+    display: inline-block;
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+select#dropdown,
+input#search {
+    font-size: 15px;
+}
