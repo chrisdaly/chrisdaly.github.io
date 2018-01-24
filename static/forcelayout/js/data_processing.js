@@ -1,6 +1,6 @@
 function load_data(location) {
     var graph;
-    jQuery.ajax({
+    $.ajax({
         dataType: "json",
         url: location,
         async: false,
