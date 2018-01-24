@@ -1,4 +1,5 @@
 var graph_raw = load_data("/static/forcelayout/data/mdl.json");
+
 var graph_processed = pre_process_graph(graph_raw);
 
 function update() {
@@ -22,7 +23,7 @@ var opacity_fade = .05;
 var text_size_highlight = 1.8;
 var text_size_normal = 1;
 
-text_multiplier
+// text_multiplier
 
 
 var font_weight_highlight = 'bolder';
