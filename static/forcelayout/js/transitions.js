@@ -1,22 +1,20 @@
 function mouse_over(id) {
-    transition(id, opacity_highlight_node, opacity_fade,
-        opacity_normal_link, text_size_highlight, font_weight_highlight,
+    transition(id, opacity_highlight, opacity_fade,
+        opacity_normal, text_size_highlight, font_weight_highlight,
         font_weight_normal)
 }
 
 function mouse_out(id) {
-    transition(id, opacity_normal_node, opacity_normal_node,
-        opacity_normal_link, text_size_normal, font_weight_normal,
+    transition(id, opacity_normal, text_size_normal, font_weight_normal,
         font_weight_normal)
 }
 
-function transition(id, opacity_highlight_node, opacity_fade, opacity_normal_link, text_size_highlight, font_weight_highlight, font_weight_normal) {
+function transition(id, opacity_highlight, opacity_fade, opacity_normal, text_size_highlight, font_weight_highlight, font_weight_normal) {
     var segments = segment_nodes(id, graph);
-    // console.log(segments)
-    transition_nodes(segments['node_id'], opacity_highlight_node, text_size_highlight, font_weight_highlight);
-    // transition_neighbours(segments['neighbour_ids'], opacity_highlight_node);
-    transition_links(segments['link_ids'], opacity_normal_link);
-    transition_other_nodes(segments['node_other_ids'], opacity_fade, font_weight_normal);
+    transition_nodes(segments['node_id'], opacity_highlight, text_size_highlight, font_weight_highlight);
+    transition_nodes(segments['neighbour_ids'], opacity_highlight, text_size_normal, font_weight_normal);
+    transition_nodes(segments['node_other_ids'], opacity_fade, text_size_normal, font_weight_normal);
+    transition_links(segments['link_ids'], opacity_normal);
     transition_links(segments['links_other_ids'], opacity_fade);
 }
 
@@ -48,7 +46,7 @@ function get_links_ids_for_node_id(node_ids) {
         })
         links_of_all_nodes.push(...links_connecting)
     })
-    link_ids = get_unique_values(links_of_all_nodes, 'id');
+    var link_ids = get_unique_values(links_of_all_nodes, 'id');
 
     return link_ids
 }
@@ -65,11 +63,9 @@ function get_neighbour_ids(node_id, link_ids) {
 }
 
 function get_other_nodes(node_ids) {
-
-    node_data_real = graph.nodes.filter(function(d) { return d.id })
-    all_node_ids = get_unique_values(node_data_real, 'id')
-
-    node_other_ids = all_node_ids.filter(x => node_ids.indexOf(x) < 0);
+    var node_data_real = graph.nodes.filter(function(d) { return d.id });
+    var all_node_ids = get_unique_values(node_data_real, 'id');
+    var node_other_ids = all_node_ids.filter(x => node_ids.indexOf(x) < 0);
 
     return node_other_ids
 }
@@ -85,15 +81,15 @@ function parse_other_node_from_link_id(link_id, node_id) {
     return link_id.replace(node_id, '').replace(' ', '')
 }
 
-function transition_nodes(node_ids, opacity_node, text_multiplier, font_weight) {
-    node = nodes.filter(function(d) {
+function transition_nodes(node_ids, opacity, text_multiplier, font_weight) {
+    var node = nodes.filter(function(d) {
         return node_ids.includes(d.id)
     })
 
     node
         .transition()
         .duration(500)
-        .style('opacity', opacity_node)
+        .style('opacity', opacity)
 
     node
         .select('text')
@@ -105,48 +101,6 @@ function transition_nodes(node_ids, opacity_node, text_multiplier, font_weight) 
         })
         .attr('font-weight', font_weight);
 }
-
-// function transition_neighbours(node_ids, opacity) {
-//     node = nodes.filter(function(d) {
-//         return node_ids.includes(d.id);
-//     })
-
-//     node
-//         .transition()
-//         .duration(1000)
-//         .style('opacity', opacity);
-
-//     node
-//         .select('text')
-//         .transition()
-//         .delay(100)
-//         .duration(500)
-//         .attr('font-size', function(d) {
-//             return radius(d[radius_metric]) + 'px'
-//         })
-//         .attr('font-weight', 'inherit');
-// }
-
-function transition_other_nodes(node_ids, opacity, font_weight) {
-    node = nodes.filter(function(d) {
-        return node_ids.includes(d.id);
-    })
-
-    node.transition()
-        .duration(1000)
-        .style('opacity', opacity);
-
-    node
-        .select('text')
-        .transition()
-        .delay(100)
-        .duration(500)
-        .attr('font-size', function(d) {
-            return radius(d[radius_metric]) + 'px'
-        })
-        .attr('font-weight', font_weight);
-}
-
 
 function transition_links(link_ids, opacity) {
     var link = links.filter(function(d) {
@@ -166,7 +120,7 @@ function show_tooltip(d) {
     if (tooltip_display == false) {
         return
     }
-    coords = calc_tooltip_coords();
+    var coords = calc_tooltip_coords();
 
     tooltip.transition()
         .style('display', 'block')

@@ -1,12 +1,5 @@
 var graph_raw = load_data("/static/forcelayout/data/mdl.json");
-
 var graph_processed = pre_process_graph(graph_raw);
-
-function update() {
-    graph = wrangle_data(graph_processed);
-    graph = add_extra_nodes_links_for_curves(graph);
-    update_viz(graph);
-}
 
 var margin = { 'top': 20, 'right': 10, 'bottom': 10, 'left': 10 };
 var width = $('#viz').width() - margin.left - margin.right;
@@ -15,17 +8,11 @@ var height = $('#viz').height() - margin.top - margin.bottom;
 var link_dim = [.5, 20];
 var radius_range = [5, 10, 15, 20];
 var stroke_fade = .2;
-var opacity_normal_node = .8;
-var opacity_highlight_node = 1;
-var opacity_normal_link = .8;
+var opacity_normal = .8;
 var opacity_highlight = 1;
 var opacity_fade = .05;
 var text_size_highlight = 1.8;
 var text_size_normal = 1;
-
-// text_multiplier
-
-
 var font_weight_highlight = 'bolder';
 var font_weight_normal = 'inherit';
 var tooltip_offset = 20;
@@ -56,7 +43,7 @@ var simulation = d3.forceSimulation()
     .force("charge", d3.forceManyBody().theta(1).distanceMax(800).strength(-100)) //
     .force("center", d3.forceCenter(width / 2, height / 2))
     .alphaDecay(0.01)
-    .alpha(0.5)
+    .alpha(1)
     .force("y", d3.forceY())
     .force("x", d3.forceX());
 
@@ -65,24 +52,34 @@ function create_filters(graph_processed) {
     countries.splice(0, 0, "None");
 
     max_length = graph_processed.nodes.length;
+    groups = get_unique_values(graph_processed.nodes, 'group');
+    groups = groups.map(Number);
 
-    group_mapping = {
-        1: 'HCP',
-        2: 'advocate',
-        3: 'patient'
-    };
-
-    filters = {
-        'node_types': Object.values(group_mapping),
+    var filters = {
+        'node_types': groups,
         'node_num': graph_processed.links.length,
         'country': 'None'
     };
+
+    return filters;
 }
 
-create_filters(graph_processed)
-create_ui();
+filters = create_filters(graph_processed)
+console.log(filters)
+create_ui(filters);
 update();
 
+
+function update() {
+    graph = wrangle_data(graph_processed, filters);
+    graph = add_extra_nodes_links_for_curves(graph);
+    update_viz(graph);
+}
+
+
+function init_viz() {
+
+}
 
 function update_viz(graph) {
     scale_links = d3.scaleLinear()
@@ -94,7 +91,7 @@ function update_viz(graph) {
         .range(radius_range);
 
     links = svg.select(".links").selectAll(".link")
-        .data(graph.bi_links, function(d) { return d.id; })
+        .data(graph.bi_links, function(d) { return d[1].link_id; })
 
     links.exit().transition().duration(200)
         .attr("stroke-width", function(d) { return 0 })
@@ -108,16 +105,10 @@ function update_viz(graph) {
         .attr('id', function(d) { return d[0].id + ' ' + d[2].id })
         .style("stroke-width", function(d) { return scale_links(d[1].link_value) })
         .style("stroke", function(d) { return colour(d[0].group); })
-        .style("stroke-opacity", opacity_normal_link);
-
-    function get_link_value(graph, id) {
-        graph.bi_links.filter(function(d) {
-            return d.id == d
-        })
-    }
+        .style("stroke-opacity", opacity_normal);
 
     nodes = svg.select(".nodes").selectAll(".node")
-        .data(graph.nodes.filter(function(d) { return d.id; }))
+        .data(graph.nodes) //.filter(function(d) { return d.id; })
 
     nodes.exit().transition().duration(700)
         .attr("r", 0)
@@ -129,7 +120,7 @@ function update_viz(graph) {
         .attr("class", "node")
         .attr('id', function(d) { return d.id; })
         .merge(nodes)
-        .style('opacity', opacity_normal_node)
+        .style('opacity', opacity_normal)
 
     nodes
         .call(d3.drag()
@@ -138,8 +129,7 @@ function update_viz(graph) {
             .on("end", dragended))
     nodes
         .on('mouseover', function(d) {
-            // Fixes ordering of text and other circles.
-            this.parentNode.appendChild(this);
+            this.parentNode.appendChild(this); // Fixes ordering of text and other circles.
             show_tooltip(d);
             mouse_over(d.id)
         })
@@ -167,7 +157,7 @@ function update_viz(graph) {
         .attr('font-size', function(d) {
             return radius(d[radius_metric]) + 6 + 'px'
         })
-        .attr('class', function(d) { return group_mapping[d.group] })
+        .attr('class', function(d) { return d })
         .text(function(d) { return d['id'] });
 
     simulation
@@ -221,19 +211,15 @@ function sort_graph_nodes(node_data) {
     return node_data
 }
 
-
-
 function update_type_filter(d) {
-    val = d3.select(this).attr('id');
+    val = parseInt(d3.select(this).attr('id'));
     opacity = toggle_array(filters['node_types'], val)
     if (opacity == false) {
         return
     }
-    d3.select(this).style('opacity', opacity_normal_link)
-    update()
+    d3.select(this).style('opacity', opacity)
+    update();
 }
-
-
 
 function filter_num(val) {
     filters['node_num'] = val;
@@ -250,20 +236,20 @@ function check_nodes_for_string(ele) {
     if (val == '') {
         var node_ids = get_unique_values(graph.nodes, 'id')
         var link_ids = get_unique_values(graph.links, 'id')
-        transition_nodes(node_ids, opacity_normal_node);
-        transition_links(link_ids, opacity_normal_link)
+        transition_nodes(node_ids, opacity_normal);
+        transition_links(link_ids, opacity_normal)
 
     } else {
         var real_node_data = graph.nodes.filter(function(d) { return d.id; })
-        node_ids = get_node_ids_matching_substring(real_node_data, val);
+        var node_ids = get_node_ids_matching_substring(real_node_data, val);
         var node_other_ids = get_other_nodes(node_ids)
-        link_ids = get_links_ids_for_node_id(node_ids);
-        links_other_ids = get_other_links_ids(link_ids)
+        var link_ids = get_links_ids_for_node_id(node_ids);
+        var links_other_ids = get_other_links_ids(link_ids)
 
-        transition_nodes(node_ids, opacity_highlight_node, text_size_highlight, font_weight_highlight);
-        transition_neighbours(node_other_ids, opacity_fade)
-        transition_links(link_ids, opacity_normal_link)
-        transition_links(links_other_ids, opacity_fade)
+            transition_nodes(node_ids, opacity_highlight, text_size_highlight, font_weight_highlight);
+            transition_nodes(node_other_ids, opacity_fade, text_size_normal, font_weight_normal);
+            transition_links(link_ids, opacity_normal)
+            transition_links(links_other_ids, opacity_fade)
     }
 }
 

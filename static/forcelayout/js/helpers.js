@@ -67,13 +67,16 @@ function toggle_array(l, val) {
     if (i == -1) {
         l.push(val)
         return 1
-    } else {
+    } 
+    else {
         if (l.length > 1) {
             l.splice(i, 1)
-            return .4
+            return .5
+        }
+        else {
+            return 
         }
     }
-    return false
 }
 
 

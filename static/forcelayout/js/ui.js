@@ -57,7 +57,6 @@ function create_tooltip() {
         });
 }
 
-
 function create_legend() {
     var legend = d3.select("#legend")
         .append("svg").attr('id', 'legend')
@@ -67,9 +66,7 @@ function create_legend() {
         .attr("r", 20)
         .attr('cx', 25)
         .attr('cy', 25)
-        .style('stroke', 'black')
-        .style('stroke-width', .5)
-        .style('fill', '#3366cc');
+        .style('fill', '#494848');
 
     legend.append("text")
         .text('Node Radius = Number of followers')
@@ -89,9 +86,9 @@ function create_legend() {
 
     legend.append("path")
         .attr("d", line_generator(line_data))
-        .attr("stroke", "#3366cc") // TODO. put colour in variable and ref.
+        .attr("stroke", "#494848") // TODO. put colour in variable and ref.
         .attr("stroke-width", 7)
-        .style('opacity', opacity_normal_link);
+        .style('opacity', opacity_normal);
 
     legend.append("text")
         .text('Link Width = In-degree of mentions and retweets')
@@ -110,11 +107,12 @@ function create_buttons() {
         .attr('width', '100%')
 
     var buttons = button_div.selectAll('.circle')
-        .data([1, 2, 3])
+        .data(groups)
         .enter()
         .append("g")
 
     buttons.append("circle")
+        .attr('id', function(d) { return d; })
         .attr("r", 20)
         .attr("fill", function(d) { return colour(d) })
         .attr('cx', function(i, d) { return i * circles_offset })
@@ -122,7 +120,7 @@ function create_buttons() {
         .on('click', update_type_filter)
 
     buttons.append("text")
-        .text(function(d) { return group_mapping[d] })
+        .text(function(d) { return d; })
         .attr('x', function(i, d) { return i * circles_offset })
         .attr('y', 60)
         .attr('text-anchor', 'middle')

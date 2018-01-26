@@ -35,10 +35,10 @@ function pre_process_graph(graph) {
     return graph
 }
 
-function wrangle_data(graph_processed) {
+function wrangle_data(graph_processed, filters) {
     var graph = $.extend(true, {}, graph_processed)
-    var num = filters['node_num']
-    graph.nodes = filter_nodes(graph_processed, num);
+    // var num = filters['node_num']
+    graph.nodes = filter_nodes(graph_processed, filters);
     graph.links = graph_processed.links.filter(function(d) {
         return ((graph.nodes.includes(d.source)) &
             (graph.nodes.includes(d.target)))
@@ -86,15 +86,15 @@ function add_node_quantity(node_data) {
     return node_data
 }
 
-function filter_nodes(graph_processed, num) {
-    // nodes_filtered = graph.nodes.filter(function(d) {
-    //     if (filters['node_types'].includes(group_mapping[d.group])) {
-    //         return d.group
-    //     }
-    // });
+function filter_nodes(graph_processed, filters) {
+    nodes_filtered = graph_processed.nodes.filter(function(d) {
+        if (filters['node_types'].includes(d.group)) {
+            return d.group
+        }
+    });
 
-    nodes_filtered = graph_processed.nodes
-    nodes_filtered = nodes_filtered.slice(0, num);
+    // nodes_filtered = graph_processed.nodes
+    // nodes_filtered = nodes_filtered.slice(0, num);
     // if (filters['country'] != 'None') {
     //     nodes_filtered = nodes_filtered.filter(function(d) {
     //         return d.Country == filters['country'];
